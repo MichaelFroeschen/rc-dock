@@ -56,6 +56,11 @@ interface LayoutProps {
   onLayoutChange?(newLayout: LayoutBase, currentTabId: string): void;
 
   /**
+   * @param tabId id of the tab to closed
+   */
+  onTabClosed?(tabId: string): void;
+
+  /**
    * - default mode: showing 4 to 9 squares to help picking drop areas
    * - edge mode: using the distance between mouse and panel border to pick drop area
    *   - in edge mode, dragging float panel's header won't bring panel back to dock layer
@@ -151,6 +156,7 @@ export class DockLayout extends React.PureComponent<LayoutProps, LayoutState> im
       layout = Algorithm.moveToFront(layout, source);
     } else {
       layout = Algorithm.removeFromLayout(layout, source);
+      this.props.onTabClosed(source.id);
     }
 
     if (typeof target === 'string') {
